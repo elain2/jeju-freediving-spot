@@ -631,6 +631,527 @@
             width: 24px;
             height: 24px;
         }
+
+        /* ==================== */
+        /* Responsive Design    */
+        /* ==================== */
+
+        /* Mobile first - Small screens (< 480px) */
+        @media (max-width: 480px) {
+            .header {
+                padding: 15px 10px;
+            }
+
+            .header h1 {
+                font-size: 1.3rem;
+                line-height: 1.4;
+            }
+
+            .header .cat-img {
+                width: 40px;
+                height: 40px;
+                margin-left: 5px;
+            }
+
+            .header p {
+                font-size: 0.85rem;
+                margin-top: 5px;
+            }
+
+            .container {
+                padding: 10px;
+                gap: 15px;
+            }
+
+            .map-container {
+                border-radius: 15px;
+                border: 3px solid white;
+            }
+
+            #map {
+                height: 350px;
+            }
+
+            .filters, .legend, .spot-list {
+                padding: 12px;
+                border-radius: 12px;
+            }
+
+            .filters h3, .legend h3, .spot-list h3 {
+                font-size: 0.9rem;
+            }
+
+            .filter-btn {
+                padding: 6px 12px;
+                font-size: 0.8rem;
+            }
+
+            .spot-item {
+                padding: 10px;
+            }
+
+            .spot-item h4 {
+                font-size: 0.9rem;
+            }
+
+            .spot-item p {
+                font-size: 0.8rem;
+            }
+
+            .legend-item {
+                font-size: 0.8rem;
+            }
+
+            .modal {
+                width: 95%;
+                max-height: 90vh;
+                border-radius: 20px;
+            }
+
+            .modal-header {
+                padding: 20px 15px;
+                border-radius: 20px 20px 0 0;
+            }
+
+            .modal-header h2 {
+                font-size: 1.2rem;
+                padding-right: 30px;
+            }
+
+            .modal-body {
+                padding: 15px;
+            }
+
+            .info-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .info-card {
+                padding: 12px 8px;
+            }
+
+            .info-card .icon {
+                font-size: 1.2rem;
+            }
+
+            .info-card .label {
+                font-size: 0.7rem;
+            }
+
+            .info-card .value {
+                font-size: 0.85rem;
+            }
+
+            .section h3 {
+                font-size: 0.9rem;
+            }
+
+            .section p {
+                font-size: 0.85rem;
+            }
+
+            .photo-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+
+            .photo-placeholder {
+                font-size: 0.7rem;
+            }
+
+            .photo-placeholder .icon {
+                font-size: 1.2rem;
+            }
+
+            .instagram-link {
+                padding: 8px 15px;
+                font-size: 0.8rem;
+            }
+
+            .review-item {
+                padding: 10px 0;
+            }
+
+            .reviewer {
+                font-size: 0.85rem;
+            }
+
+            .review-text {
+                font-size: 0.85rem;
+            }
+
+            .footer {
+                padding: 15px;
+            }
+
+            .footer p {
+                font-size: 0.8rem;
+            }
+
+            .footer .paws {
+                font-size: 1rem;
+                letter-spacing: 3px;
+            }
+
+            .close-btn {
+                width: 30px;
+                height: 30px;
+                font-size: 1.2rem;
+                top: 12px;
+                right: 12px;
+            }
+
+            .spot-list {
+                max-height: 400px;
+            }
+        }
+
+        /* Medium screens - Tablets (481px - 767px) */
+        @media (min-width: 481px) and (max-width: 767px) {
+            .header h1 {
+                font-size: 1.6rem;
+            }
+
+            .header .cat-img {
+                width: 45px;
+                height: 45px;
+            }
+
+            #map {
+                height: 450px;
+            }
+
+            .container {
+                padding: 15px;
+            }
+
+            .modal {
+                width: 90%;
+            }
+
+            .photo-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        /* Tablet landscape (768px - 1023px) */
+        @media (min-width: 768px) and (max-width: 1023px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+
+            .filters {
+                flex: 1;
+                min-width: 200px;
+            }
+
+            .legend {
+                flex: 1;
+                min-width: 200px;
+            }
+
+            .ad-container {
+                flex: 1;
+                min-width: 300px;
+            }
+
+            .spot-list {
+                flex: 1 1 100%;
+                max-height: 350px;
+            }
+
+            #map {
+                height: 500px;
+            }
+        }
+
+        /* Desktop (1024px - 1279px) */
+        @media (min-width: 1024px) and (max-width: 1279px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .spot-list {
+                max-height: 550px;
+            }
+        }
+
+        /* Large desktop (1280px+) */
+        @media (min-width: 1280px) {
+            .container {
+                max-width: 1600px;
+            }
+
+            .header h1 {
+                font-size: 2.2rem;
+            }
+
+            .header p {
+                font-size: 1.1rem;
+            }
+
+            #map {
+                height: 750px;
+            }
+
+            .spot-list {
+                max-height: 600px;
+            }
+
+            .filters h3, .legend h3, .spot-list h3 {
+                font-size: 1.1rem;
+            }
+
+            .filter-btn {
+                padding: 10px 20px;
+                font-size: 0.95rem;
+            }
+
+            .spot-item h4 {
+                font-size: 1.1rem;
+            }
+
+            .modal {
+                max-width: 700px;
+            }
+
+            .modal-header h2 {
+                font-size: 1.7rem;
+            }
+
+            .info-card .value {
+                font-size: 1.1rem;
+            }
+        }
+
+        /* Touch device optimizations */
+        @media (hover: none) and (pointer: coarse) {
+            .filter-btn {
+                min-height: 44px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .spot-item {
+                min-height: 60px;
+            }
+
+            .popup-btn {
+                min-height: 44px;
+                padding: 10px 20px;
+            }
+
+            .close-btn {
+                min-width: 44px;
+                min-height: 44px;
+            }
+
+            .photo-placeholder {
+                min-height: 80px;
+            }
+        }
+
+        /* Landscape orientation on mobile */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .header {
+                padding: 10px;
+            }
+
+            .header h1 {
+                font-size: 1.2rem;
+            }
+
+            .header p {
+                display: none;
+            }
+
+            .container {
+                flex-direction: row;
+                padding: 10px;
+            }
+
+            .map-container {
+                flex: 2;
+            }
+
+            .sidebar {
+                flex: 1;
+                max-height: calc(100vh - 80px);
+                overflow-y: auto;
+            }
+
+            #map {
+                height: calc(100vh - 100px);
+            }
+
+            .modal {
+                max-height: 95vh;
+            }
+
+            .modal-body {
+                max-height: calc(95vh - 100px);
+                overflow-y: auto;
+            }
+        }
+
+        /* High DPI / Retina displays */
+        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+            .map-container {
+                border-width: 3px;
+            }
+        }
+
+        /* Print styles */
+        @media print {
+            .header {
+                background: #0288d1;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .ad-container {
+                display: none !important;
+            }
+
+            .modal-overlay {
+                display: none !important;
+            }
+
+            #map {
+                height: 400px;
+            }
+
+            .sidebar {
+                page-break-inside: avoid;
+            }
+        }
+
+        /* Reduced motion preference */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation: none !important;
+                transition: none !important;
+            }
+
+            .header::before {
+                animation: none;
+            }
+
+            .paw-marker:hover {
+                transform: none;
+            }
+        }
+
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: linear-gradient(135deg, #1a3a4a 0%, #0d2636 100%);
+            }
+
+            .filters, .legend, .spot-list {
+                background: #1e3a4a;
+                color: #e0f7fa;
+            }
+
+            .filters h3, .legend h3, .spot-list h3 {
+                color: #4fc3f7;
+            }
+
+            .spot-item {
+                background: linear-gradient(135deg, #1e4a5a 0%, #0d3646 100%);
+            }
+
+            .spot-item h4 {
+                color: #81d4fa;
+            }
+
+            .spot-item p {
+                color: #b0bec5;
+            }
+
+            .filter-btn {
+                background: #1e3a4a;
+                border-color: #4fc3f7;
+                color: #4fc3f7;
+            }
+
+            .filter-btn:hover, .filter-btn.active {
+                background: linear-gradient(135deg, #4fc3f7, #29b6f6);
+                color: #0d2636;
+            }
+
+            .legend-item {
+                color: #b0bec5;
+            }
+
+            .modal {
+                background: #1e3a4a;
+            }
+
+            .modal-body {
+                color: #e0f7fa;
+            }
+
+            .info-card {
+                color: #1e3a4a;
+            }
+
+            .section h3 {
+                color: #4fc3f7;
+            }
+
+            .section p {
+                color: #b0bec5;
+            }
+
+            .reviews {
+                background: #0d2636;
+            }
+
+            .review-item {
+                border-bottom-color: #2e5a6a;
+            }
+
+            .reviewer {
+                color: #e0f7fa;
+            }
+
+            .review-text {
+                color: #b0bec5;
+            }
+
+            .footer {
+                color: #4fc3f7;
+            }
+
+            .footer p:last-child {
+                color: #78909c;
+            }
+
+            .leaflet-popup-content-wrapper {
+                background: #1e3a4a;
+                color: #e0f7fa;
+            }
+
+            .popup-content h4 {
+                color: #4fc3f7;
+            }
+
+            .popup-content p {
+                color: #b0bec5;
+            }
+
+            ::-webkit-scrollbar-track {
+                background: #0d2636;
+            }
+        }
     </style>
 </head>
 <body>
