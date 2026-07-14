@@ -201,7 +201,7 @@
 
         /* Spot list */
         .spot-list {
-            background: rgba(255, 255, 255, 0.6);
+            background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(10px);
             border-radius: 15px;
             padding: 15px;
@@ -574,12 +574,71 @@
             box-shadow: 0 3px 10px rgba(41,182,246,0.4);
         }
 
+        /* Disclaimer */
+        .disclaimer {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(255,152,0,0.1) 0%, rgba(255,193,7,0.1) 100%);
+            border: 2px solid #ffb74d;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(255,152,0,0.15);
+        }
+
+        .disclaimer h3 {
+            color: #e65100;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .disclaimer-item {
+            margin-bottom: 12px;
+            padding-left: 10px;
+            border-left: 3px solid #ffb74d;
+        }
+
+        .disclaimer-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .disclaimer-item strong {
+            color: #e65100;
+            font-weight: 600;
+        }
+
+        .disclaimer-item p {
+            color: #5d4037;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-top: 3px;
+        }
+
+        @media (max-width: 480px) {
+            .disclaimer {
+                margin: 15px 10px;
+                padding: 15px;
+            }
+
+            .disclaimer h3 {
+                font-size: 1rem;
+            }
+
+            .disclaimer-item p {
+                font-size: 0.85rem;
+            }
+        }
+
         /* Footer */
         .footer {
             text-align: center;
             padding: 20px;
             color: #0288d1;
             font-size: 0.9rem;
+            background: rgba(255, 255, 255, 0.5);
+            margin-top: 10px;
         }
 
         .footer .paws {
@@ -1139,6 +1198,27 @@
                 color: #78909c;
             }
 
+            .disclaimer {
+                background: linear-gradient(135deg, rgba(255,152,0,0.15) 0%, rgba(255,193,7,0.1) 100%);
+                border-color: #ff9800;
+            }
+
+            .disclaimer h3 {
+                color: #ffb74d;
+            }
+
+            .disclaimer-item {
+                border-left-color: #ff9800;
+            }
+
+            .disclaimer-item strong {
+                color: #ffb74d;
+            }
+
+            .disclaimer-item p {
+                color: #b0bec5;
+            }
+
             .leaflet-popup-content-wrapper {
                 background: #1e3a4a;
                 color: #e0f7fa;
@@ -1296,6 +1376,23 @@
                     <div class="reviews" id="modalReviews"></div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Disclaimer -->
+    <div class="disclaimer">
+        <h3>⚠️ 제주 다이빙 스팟 지도 이용 시 주의사항</h3>
+        <div class="disclaimer-item">
+            <strong>🚨 안전 최우선</strong>
+            <p>본 지도의 정보는 단순 참고용입니다. 기상 악화, 조류 변화 등으로 인한 안전 사고의 책임은 이용자 본인에게 있습니다. 입수 전 현지 기상과 물때를 반드시 확인하세요.</p>
+        </div>
+        <div class="disclaimer-item">
+            <strong>🦺 안전 장비 필수</strong>
+            <p>구명조끼나 부표(안전 부이)를 지참하시고, 날카로운 바위로부터 몸을 보호할 부츠와 슈트 착용을 권장합니다. (단독 다이빙 절대 금지, 버디 동반 필수)</p>
+        </div>
+        <div class="disclaimer-item">
+            <strong>🤝 지역 주민 배려</strong>
+            <p>해녀분들의 조업 공간이나 어촌계 양식장 구역은 진입을 금합니다. 불법 주차나 쓰레기 투기로 인해 현지 주민들께 피해가 가지 않도록 주의해 주세요.</p>
         </div>
     </div>
 
