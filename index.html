@@ -459,6 +459,32 @@
             margin-bottom: 5px;
         }
 
+        .photo-notice {
+            font-size: 0.8rem;
+            color: #ff9800;
+            background: #fff8e1;
+            padding: 8px 12px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 3px solid #ff9800;
+        }
+
+        .spot-photo {
+            aspect-ratio: 1;
+            border-radius: 12px;
+            object-fit: cover;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid #e1f5fe;
+        }
+
+        .spot-photo:hover {
+            transform: scale(1.05);
+            border-color: #4fc3f7;
+            box-shadow: 0 4px 15px rgba(79,195,247,0.3);
+        }
+
         .reviews {
             background: #fafafa;
             border-radius: 12px;
@@ -1190,6 +1216,16 @@
                 color: #b0bec5;
             }
 
+            .photo-notice {
+                background: #3e2723;
+                color: #ffcc80;
+                border-left-color: #ff9800;
+            }
+
+            .spot-photo {
+                border-color: #2e5a6a;
+            }
+
             .footer {
                 color: #4fc3f7;
             }
@@ -1364,10 +1400,11 @@
                 </div>
 
                 <div class="section">
-                    <h3>📸 인스타그램 사진</h3>
+                    <h3>📸 참고 이미지</h3>
+                    <p class="photo-notice">※ 아래 사진은 실제 현장 사진이 아닌 참고용 이미지입니다.</p>
                     <div class="photo-grid" id="modalPhotos"></div>
                     <a href="#" class="instagram-link" id="instagramLink" target="_blank">
-                        📷 인스타그램에서 더 보기
+                        📷 인스타그램에서 실제 사진 보기
                     </a>
                 </div>
 
@@ -1421,7 +1458,11 @@
                 category: ["freediving", "boat"],
                 features: "화산 활동으로 형성된 암반 지형에 단단한 암석에 붙어 자라는 홍조류가 풍부합니다. 형형색색의 연산호 군락이 장관을 이루며, 붉은 홍조류와 푸른 바닷물의 조화가 특히 가을에 아름답습니다. 난파선 포인트도 있어 다양한 볼거리를 제공합니다.",
                 instagramTag: "문섬프리다이빙",
-                photos: ["연산호 군락", "난파선 탐험", "홍조류 숲"],
+                photos: [
+                    { url: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&h=400&fit=crop", alt: "연산호 군락" },
+                    { url: "https://images.unsplash.com/photo-1682687220742-aba13b6e50ba?w=400&h=400&fit=crop", alt: "수중 풍경" },
+                    { url: "https://images.unsplash.com/photo-1559825481-12a05cc00344?w=400&h=400&fit=crop", alt: "바다 속" }
+                ],
                 reviews: [
                     { user: "다이빙캣🐱", date: "2024.11", rating: 5, text: "제주 최고의 프리다이빙 포인트! 연산호가 정말 아름다워요. 보트로 5분이면 도착해서 접근성도 좋습니다." },
                     { user: "바다사랑", date: "2024.10", rating: 5, text: "가을에 방문했는데 시야가 정말 좋았어요. 물고기 떼도 많이 볼 수 있었습니다." }
@@ -1439,7 +1480,11 @@
                 category: ["freediving", "boat"],
                 features: "약 80m 높이의 깎아지른 절벽으로 둘러싸인 섬으로, 조면암의 주상절리와 해식동굴이 발달해 있습니다. '콧구멍'이라 불리는 독특한 지형과 기차바위 포인트에서 화려한 연산호를 감상할 수 있습니다. 지형 다이빙의 매력을 느낄 수 있는 곳입니다.",
                 instagramTag: "범섬다이빙",
-                photos: ["주상절리", "해식동굴", "연산호"],
+                photos: [
+                    { url: "https://images.unsplash.com/photo-1583212292454-1fe6229603b7?w=400&h=400&fit=crop", alt: "해식동굴" },
+                    { url: "https://images.unsplash.com/photo-1546026423-cc4642628d2b?w=400&h=400&fit=crop", alt: "수중 절벽" },
+                    { url: "https://images.unsplash.com/photo-1682687982501-1e58ab814714?w=400&h=400&fit=crop", alt: "연산호" }
+                ],
                 reviews: [
                     { user: "딥다이버", date: "2024.09", rating: 5, text: "콧구멍 포인트가 정말 인상적이었어요. 동굴 지형 탐험이 스릴 있습니다!" },
                     { user: "제주다이버", date: "2024.08", rating: 4, text: "조류가 있어서 경험자에게 추천합니다. 지형이 정말 독특해요." }
@@ -1457,7 +1502,11 @@
                 category: ["freediving", "boat"],
                 features: "서귀포시에서 남서쪽으로 3km 떨어진 무인도입니다. 인공 어초와 말미잘 군락, 산호가 어우러져 아기자기한 볼거리가 많습니다. 비교적 다양한 해양생물을 가까이서 관찰할 수 있어 수중 사진 촬영에 인기있는 포인트입니다.",
                 instagramTag: "섶섬다이빙",
-                photos: ["말미잘 군락", "인공어초", "열대어"],
+                photos: [
+                    { url: "https://images.unsplash.com/photo-1546026423-cc4642628d2b?w=400&h=400&fit=crop", alt: "말미잘 군락" },
+                    { url: "https://images.unsplash.com/photo-1571752726703-5e7d1f6a986d?w=400&h=400&fit=crop", alt: "인공어초" },
+                    { url: "https://images.unsplash.com/photo-1534043464124-3be32fe000c9?w=400&h=400&fit=crop", alt: "열대어" }
+                ],
                 reviews: [
                     { user: "수중사진가", date: "2024.10", rating: 5, text: "말미잘 군락이 정말 예뻐요. 사진 찍기 좋은 포인트가 많습니다." },
                     { user: "바다탐험가", date: "2024.07", rating: 4, text: "다양한 물고기를 볼 수 있어서 좋았어요. 수온도 적당했습니다." }
@@ -1475,7 +1524,11 @@
                 category: ["snorkeling", "beginner"],
                 features: "방파제 구조 덕분에 비교적 물살이 약해 초보자도 안전하게 즐길 수 있습니다. 에메랄드빛 투명한 물과 하얀 모래사장이 아름다우며, 비양도를 배경으로 한 풍경이 인상적입니다. 주변 편의시설도 잘 갖춰져 있어 가족 단위 방문객에게 인기입니다.",
                 instagramTag: "협재해변스노쿨링",
-                photos: ["에메랄드 바다", "비양도 뷰", "열대어"],
+                photos: [
+                    { url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&h=400&fit=crop", alt: "에메랄드 바다" },
+                    { url: "https://images.unsplash.com/photo-1519046904884-53103b34b206?w=400&h=400&fit=crop", alt: "해변 풍경" },
+                    { url: "https://images.unsplash.com/photo-1560275619-4662e36fa65c?w=400&h=400&fit=crop", alt: "스노쿨링" }
+                ],
                 reviews: [
                     { user: "초보다이버", date: "2024.08", rating: 5, text: "처음 스노쿨링하는데 물이 정말 맑고 잔잔해서 좋았어요!" },
                     { user: "가족여행", date: "2024.07", rating: 5, text: "아이들과 함께 하기 좋아요. 샤워시설도 잘 되어있습니다." }
@@ -1493,7 +1546,11 @@
                 category: ["snorkeling"],
                 features: "서우봉 바로 아래 자리한 포인트가 스노쿨링 명소입니다. 멸치떼와 다양한 물고기 떼를 만날 수 있으며, 동남아 스노쿨링 포인트처럼 해초와 어우러진 물고기들의 모습을 감상할 수 있습니다. 전신 슈트 등 전문 장비 착용을 권장합니다.",
                 instagramTag: "함덕스노쿨링",
-                photos: ["서우봉 뷰", "멸치떼", "해초 숲"],
+                photos: [
+                    { url: "https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=400&h=400&fit=crop", alt: "서우봉 뷰" },
+                    { url: "https://images.unsplash.com/photo-1544551763-77ef2d0cfc6c?w=400&h=400&fit=crop", alt: "물고기떼" },
+                    { url: "https://images.unsplash.com/photo-1551244072-5d12893278ab?w=400&h=400&fit=crop", alt: "해초 숲" }
+                ],
                 reviews: [
                     { user: "물개다이버", date: "2024.09", rating: 4, text: "멸치떼가 지나갈 때 정말 장관이에요! 물때 잘 맞춰서 가세요." },
                     { user: "바다러버", date: "2024.08", rating: 4, text: "조류가 조금 있어서 주의 필요하지만, 해양생물이 다양해요." }
@@ -1511,7 +1568,11 @@
                 category: ["snorkeling", "beginner"],
                 features: "물고기가 많이 서식하여 물때만 잘 맞추면 수족관 같은 풍경을 감상할 수 있습니다. 스노쿨링이 어렵다면 투명카약을 이용해 바다를 즐길 수도 있습니다. 해변가 카페거리가 있어 다이빙 후 휴식하기 좋습니다.",
                 instagramTag: "월정리스노쿨링",
-                photos: ["카페거리 뷰", "투명카약", "물고기 관찰"],
+                photos: [
+                    { url: "https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?w=400&h=400&fit=crop", alt: "해변 뷰" },
+                    { url: "https://images.unsplash.com/photo-1544551763-8dd44758c2dd?w=400&h=400&fit=crop", alt: "투명 바다" },
+                    { url: "https://images.unsplash.com/photo-1582967788606-a171c1080cb0?w=400&h=400&fit=crop", alt: "물고기 관찰" }
+                ],
                 reviews: [
                     { user: "카페러버", date: "2024.08", rating: 4, text: "스노쿨링 후 카페에서 쉬기 좋아요. 물이 정말 맑습니다!" },
                     { user: "초보다이버", date: "2024.07", rating: 5, text: "얕아서 초보자도 안심! 물고기도 많이 봤어요." }
@@ -1529,7 +1590,11 @@
                 category: ["snorkeling", "beginner"],
                 features: "스노쿨링을 하지 않아도 충분히 아름다운 바다입니다. 여름철이면 스노쿨링을 위해 많은 여행객이 찾습니다. 수심이 매우 얕아 아이들에게 최고의 해변이며, 바다가 워낙 깨끗해서 해변에서만 있어도 충분히 바다를 만끽할 수 있습니다.",
                 instagramTag: "김녕세기알",
-                photos: ["에메랄드 바다", "얕은 수심", "가족 스노쿨링"],
+                photos: [
+                    { url: "https://images.unsplash.com/photo-1506953823976-52e1fdc0149a?w=400&h=400&fit=crop", alt: "에메랄드 바다" },
+                    { url: "https://images.unsplash.com/photo-1471922694854-ff1b63b20054?w=400&h=400&fit=crop", alt: "얕은 수심" },
+                    { url: "https://images.unsplash.com/photo-1544551763-92ab472cad5d?w=400&h=400&fit=crop", alt: "가족 스노쿨링" }
+                ],
                 reviews: [
                     { user: "가족여행", date: "2024.08", rating: 5, text: "아이들 물놀이하기 딱 좋아요! 수심이 얕아서 안전합니다." },
                     { user: "힐링여행", date: "2024.07", rating: 5, text: "물이 정말 깨끗해서 그냥 발 담그고 있어도 힐링됩니다." }
@@ -1547,7 +1612,11 @@
                 category: ["freediving", "snorkeling"],
                 features: "보이는 것보다 수심이 깊어 구명조끼는 필수입니다. 근처 상점에서 장비 대여 가능합니다. 주차장에서 선녀탕까지 85개의 계단을 내려가야 하지만, 그만큼 프라이빗한 분위기를 즐길 수 있습니다. 천연 풀장 같은 독특한 지형이 매력적입니다.",
                 instagramTag: "황우지선녀탕",
-                photos: ["천연 풀장", "절벽 뷰", "다이빙"],
+                photos: [
+                    { url: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=400&h=400&fit=crop", alt: "천연 풀장" },
+                    { url: "https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=400&h=400&fit=crop", alt: "절벽 뷰" },
+                    { url: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&h=400&fit=crop", alt: "다이빙" }
+                ],
                 reviews: [
                     { user: "모험가", date: "2024.09", rating: 5, text: "계단 내려가는 게 힘들지만 그만한 가치가 있어요! 비밀스러운 장소 느낌." },
                     { user: "프리다이버", date: "2024.08", rating: 4, text: "수심이 깊어서 프리다이빙 연습하기 좋습니다." }
@@ -1565,7 +1634,11 @@
                 category: ["snorkeling", "beginner"],
                 features: "우도 8경 중 하나로, 동양에서 유일하게 백사장이 홍조단괴(산호가 부서진 모래)로 이루어진 해수욕장입니다. 파도가 쳐도 물속이 깨끗하게 잘 보이는 것이 특징입니다. 우도는 2~3시간이면 둘러볼 수 있어 당일치기 스노쿨링도 가능합니다.",
                 instagramTag: "우도서빈백사",
-                photos: ["산호모래 해변", "에메랄드 바다", "우도 풍경"],
+                photos: [
+                    { url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&h=400&fit=crop", alt: "산호모래 해변" },
+                    { url: "https://images.unsplash.com/photo-1520942702018-0862200e6873?w=400&h=400&fit=crop", alt: "에메랄드 바다" },
+                    { url: "https://images.unsplash.com/photo-1500259571355-332da5cb07aa?w=400&h=400&fit=crop", alt: "섬 풍경" }
+                ],
                 reviews: [
                     { user: "우도여행", date: "2024.08", rating: 5, text: "산호 해변이라 물이 정말 맑아요! 우도 방문 필수 코스입니다." },
                     { user: "스노쿨러", date: "2024.07", rating: 5, text: "파도가 있어도 시야가 좋은 게 신기해요. 아름다운 해변!" }
@@ -1583,7 +1656,11 @@
                 category: ["freediving", "snorkeling", "beginner"],
                 features: "초보 스노클러를 위한 얕은 수심부터 프리다이버를 위한 깊은 포인트까지 다양합니다. 이국적인 수중 지형이 특징이며, 야간 프리다이빙 포인트로도 유명합니다. 중문관광단지와 가까워 접근성이 좋고, 주변 편의시설도 풍부합니다.",
                 instagramTag: "중문도리빨",
-                photos: ["수중 지형", "야간 다이빙", "열대어"],
+                photos: [
+                    { url: "https://images.unsplash.com/photo-1682687982501-1e58ab814714?w=400&h=400&fit=crop", alt: "수중 지형" },
+                    { url: "https://images.unsplash.com/photo-1559825481-12a05cc00344?w=400&h=400&fit=crop", alt: "야간 다이빙" },
+                    { url: "https://images.unsplash.com/photo-1534043464124-3be32fe000c9?w=400&h=400&fit=crop", alt: "열대어" }
+                ],
                 reviews: [
                     { user: "나이트다이버", date: "2024.10", rating: 5, text: "야간 프리다이빙 정말 환상적이에요! 낮과는 다른 매력이 있습니다." },
                     { user: "초보다이버", date: "2024.09", rating: 4, text: "얕은 곳에서 시작해서 점점 깊은 곳으로 갈 수 있어요." }
@@ -1601,7 +1678,11 @@
                 category: ["freediving"],
                 features: "수영장이 아닌 진짜 인어처럼 푸른 제주 바다를 헤엄칠 수 있는 곳입니다. 바다속을 헤엄치는 물고기떼나 산호 같은 다양한 수중생물들을 눈앞에서 관찰할 수 있습니다. 프리다이빙 교육 센터들이 자주 이용하는 트레이닝 포인트입니다.",
                 instagramTag: "월령프리다이빙",
-                photos: ["프리다이빙", "물고기떼", "산호"],
+                photos: [
+                    { url: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&h=400&fit=crop", alt: "프리다이빙" },
+                    { url: "https://images.unsplash.com/photo-1544551763-77ef2d0cfc6c?w=400&h=400&fit=crop", alt: "물고기떼" },
+                    { url: "https://images.unsplash.com/photo-1546026423-cc4642628d2b?w=400&h=400&fit=crop", alt: "산호" }
+                ],
                 reviews: [
                     { user: "AIDA다이버", date: "2024.09", rating: 5, text: "교육받기 좋은 환경이에요. 강사님들도 친절하시고 시설도 좋습니다." },
                     { user: "인어공주", date: "2024.08", rating: 5, text: "진짜 인어가 된 기분! 물고기들이 가까이 와요." }
@@ -1619,7 +1700,11 @@
                 category: ["snorkeling", "beginner"],
                 features: "붉은 조랑말과 흰색 조랑말 등대로 유명한 해변입니다. 이국적인 풍경과 함께 스노쿨링을 즐길 수 있습니다. 전망휴게소, 주차장, 탈의실 등 편의시설이 잘 갖춰져 있어 편리합니다. 제주공항에서 가까워 접근성이 뛰어납니다.",
                 instagramTag: "이호테우해변",
-                photos: ["조랑말 등대", "석양 뷰", "해변 풍경"],
+                photos: [
+                    { url: "https://images.unsplash.com/photo-1520942702018-0862200e6873?w=400&h=400&fit=crop", alt: "해변 등대" },
+                    { url: "https://images.unsplash.com/photo-1507400492013-162706c8c05e?w=400&h=400&fit=crop", alt: "석양 뷰" },
+                    { url: "https://images.unsplash.com/photo-1519046904884-53103b34b206?w=400&h=400&fit=crop", alt: "해변 풍경" }
+                ],
                 reviews: [
                     { user: "사진작가", date: "2024.08", rating: 4, text: "조랑말 등대 배경으로 사진 찍기 좋아요! 스노쿨링도 가능합니다." },
                     { user: "공항근처", date: "2024.07", rating: 4, text: "공항 가기 전에 들르기 좋아요. 시설도 깔끔합니다." }
@@ -1759,10 +1844,9 @@
 
             // Photos
             document.getElementById('modalPhotos').innerHTML = spot.photos.map(photo => `
-                <div class="photo-placeholder" onclick="window.open('https://www.instagram.com/explore/tags/${spot.instagramTag}/', '_blank')">
-                    <span class="icon">📷</span>
-                    <span>${photo}</span>
-                </div>
+                <img src="${photo.url}" alt="${photo.alt}" class="spot-photo"
+                     onclick="window.open('https://www.instagram.com/explore/tags/${spot.instagramTag}/', '_blank')"
+                     onerror="this.onerror=null; this.outerHTML='<div class=\\'photo-placeholder\\'><span class=\\'icon\\'>📷</span><span>${photo.alt}</span></div>';">
             `).join('');
 
             // Instagram link
