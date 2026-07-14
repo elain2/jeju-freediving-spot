@@ -933,13 +933,22 @@
             }
         ];
 
-        // Initialize map
-        const map = L.map('map').setView([33.38, 126.55], 10);
+        // Initialize map with bounds restricted to Jeju
+        const jejuBounds = [
+            [33.0, 126.0],  // Southwest
+            [33.7, 127.1]   // Northeast
+        ];
+
+        const map = L.map('map', {
+            maxBounds: jejuBounds,
+            maxBoundsViscosity: 1.0,
+            minZoom: 9
+        }).setView([33.38, 126.55], 10);
 
         L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
             subdomains: 'abcd',
-            maxZoom: 19
+            maxZoom: 17
         }).addTo(map);
 
         // Custom paw icon (SVG cat paw)
