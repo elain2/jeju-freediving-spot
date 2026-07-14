@@ -121,11 +121,15 @@
             overflow: hidden;
             box-shadow: 0 10px 40px rgba(0,0,0,0.15);
             border: 4px solid white;
+            background: white;
+            line-height: 0;
         }
 
         #map {
             height: 500px;
             width: 100%;
+            display: block;
+            border-radius: 16px;
         }
 
         /* Watercolor/pastel effect on map tiles */
@@ -669,6 +673,10 @@
             }
 
             #map {
+                border-radius: 12px;
+            }
+
+            #map {
                 height: 350px;
             }
 
@@ -1001,12 +1009,6 @@
             }
         }
 
-        /* High DPI / Retina displays */
-        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-            .map-container {
-                border-width: 3px;
-            }
-        }
 
         /* Print styles */
         @media print {
