@@ -1698,11 +1698,28 @@
         });
 
         // Generate spot list
+        // Get paw color based on spot type
+        function getPawColor(type) {
+            if (type === '프리다이빙') return '#1565c0';
+            if (type === '스노쿨링') return '#2e7d32';
+            return '#9c27b0'; // 둘 다 가능
+        }
+
+        // Create inline SVG paw
+        function createPawSvg(color) {
+            return `<svg viewBox="0 0 100 100" width="20" height="20" style="vertical-align: middle; margin-right: 5px;">
+                <ellipse cx="50" cy="65" rx="22" ry="18" fill="${color}"/>
+                <ellipse cx="28" cy="38" rx="10" ry="12" fill="${color}"/>
+                <ellipse cx="50" cy="30" rx="10" ry="12" fill="${color}"/>
+                <ellipse cx="72" cy="38" rx="10" ry="12" fill="${color}"/>
+            </svg>`;
+        }
+
         function generateSpotList(spots) {
             const container = document.getElementById('spotListContainer');
             container.innerHTML = spots.map(spot => `
                 <div class="spot-item" onclick="focusSpot(${spot.id})">
-                    <h4>🐾 ${spot.name}</h4>
+                    <h4>${createPawSvg(getPawColor(spot.type))} ${spot.name}</h4>
                     <span class="depth">${spot.depth}</span>
                     <p>${spot.location}</p>
                     <div class="tags">
