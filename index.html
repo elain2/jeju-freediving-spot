@@ -70,6 +70,60 @@
             z-index: 1;
         }
 
+        /* Ad styles */
+        .ad-container {
+            background: linear-gradient(135deg, #fafafa 0%, #f0f0f0 100%);
+            border: 2px dashed #ccc;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            color: #888;
+            font-size: 0.85rem;
+        }
+
+        .ad-container.horizontal {
+            max-width: 728px;
+            margin: 15px auto;
+            min-height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* 모바일/데스크탑 광고 분기 */
+        .ad-mobile {
+            display: none;
+        }
+        .ad-desktop {
+            display: flex;
+        }
+
+        @media (max-width: 767px) {
+            .ad-mobile {
+                display: flex;
+                max-width: 320px;
+                min-height: 100px;
+            }
+            .ad-desktop {
+                display: none;
+            }
+        }
+
+        .ad-container.sidebar {
+            min-height: 600px;
+            width: 160px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ad-label {
+            display: block;
+            font-size: 0.7rem;
+            color: #aaa;
+            margin-bottom: 5px;
+        }
+
         /* Main container */
         .container {
             display: flex;
@@ -611,6 +665,20 @@
         <p>제주도 프리다이빙 & 스노쿨링 명소를 고양이 발자국을 따라 탐험해보세요!</p>
     </header>
 
+    <!-- 광고 영역 1: 헤더 아래 -->
+    <div class="ad-container horizontal ad-desktop" id="ad-header-desktop">
+        <ins class="kakao_ad_area" style="display:none;"
+            data-ad-unit="DAN-xapErv4GfJoqBS8b"
+            data-ad-width="728"
+            data-ad-height="90"></ins>
+    </div>
+    <div class="ad-container horizontal ad-mobile" id="ad-header-mobile">
+        <ins class="kakao_ad_area" style="display:none;"
+            data-ad-unit="DAN-ENnOah28xtO0jezt"
+            data-ad-width="320"
+            data-ad-height="100"></ins>
+    </div>
+
     <div class="container">
         <div class="map-container">
             <div id="map"></div>
@@ -650,11 +718,33 @@
                 </div>
             </div>
 
+            <!-- 광고 영역 2: 스팟 목록 위 -->
+            <div class="ad-container" id="ad-sidebar" style="min-height: 250px; display: flex; align-items: center; justify-content: center;">
+                <ins class="kakao_ad_area" style="display:none;"
+                    data-ad-unit="DAN-L5kn0JxxT0VtNScm"
+                    data-ad-width="300"
+                    data-ad-height="250"></ins>
+            </div>
+
             <div class="spot-list">
                 <h3>🏊 다이빙 스팟 목록</h3>
                 <div id="spotListContainer"></div>
             </div>
         </div>
+    </div>
+
+    <!-- 광고 영역 3: 푸터 위 -->
+    <div class="ad-container horizontal ad-desktop" id="ad-footer-desktop">
+        <ins class="kakao_ad_area" style="display:none;"
+            data-ad-unit="DAN-xapErv4GfJoqBS8b"
+            data-ad-width="728"
+            data-ad-height="90"></ins>
+    </div>
+    <div class="ad-container horizontal ad-mobile" id="ad-footer-mobile">
+        <ins class="kakao_ad_area" style="display:none;"
+            data-ad-unit="DAN-ENnOah28xtO0jezt"
+            data-ad-width="320"
+            data-ad-height="100"></ins>
     </div>
 
     <!-- Detail Modal -->
@@ -715,6 +805,9 @@
         <p>Diving Cat과 함께하는 제주 바다 탐험</p>
         <p style="font-size: 0.8rem; margin-top: 5px; color: #90a4ae;">안전한 다이빙을 위해 항상 전문 교육을 받고, 장비를 점검하세요!</p>
     </footer>
+
+    <!-- 카카오 애드핏 SDK -->
+    <script type="text/javascript" src="//t1.kakaocdn.net/kas/static/ba.min.js" async></script>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
