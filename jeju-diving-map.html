@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diving Cat's 제주 프리다이빙 & 스노쿨링 스팟</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%);
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 50%, #0288d1 100%);
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { transform: translateX(-20%) translateY(-20%); }
+            50% { transform: translateX(20%) translateY(20%); }
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 2rem;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            position: relative;
+            z-index: 1;
+        }
+
+        .header .cat-img {
+            width: 50px;
+            height: 50px;
+            vertical-align: middle;
+            margin-left: 10px;
+            border-radius: 50%;
+        }
+
+        .header p {
+            color: rgba(255,255,255,0.9);
+            margin-top: 8px;
+            font-size: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Main container */
+        .container {
+            display: flex;
+            flex-direction: column;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        @media (min-width: 1024px) {
+            .container {
+                flex-direction: row;
+            }
+        }
+
+        /* Map */
+        .map-container {
+            flex: 2;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            border: 4px solid white;
+        }
+
+        #map {
+            height: 500px;
+            width: 100%;
+        }
+
+        @media (min-width: 1024px) {
+            #map {
+                height: 700px;
+            }
+        }
+
+        /* Sidebar */
+        .sidebar {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        /* Category filters */
+        .filters {
+            background: white;
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .filters h3 {
+            color: #0288d1;
+            margin-bottom: 10px;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filter-btns {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            border: 2px solid #4fc3f7;
+            border-radius: 20px;
+            background: white;
+            color: #0288d1;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: linear-gradient(135deg, #4fc3f7, #29b6f6);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(79,195,247,0.4);
+        }
+
+        /* Spot list */
+        .spot-list {
+            background: white;
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .spot-list h3 {
+            color: #0288d1;
+            margin-bottom: 15px;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            position: sticky;
+            top: 0;
+            background: white;
+            padding-bottom: 10px;
+            border-bottom: 2px dashed #e0f7fa;
+        }
+
+        .spot-item {
+            padding: 12px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            background: linear-gradient(135deg, #f8fdff 0%, #e3f5fc 100%);
+        }
+
+        .spot-item:hover {
+            transform: translateX(5px);
+            border-color: #4fc3f7;
+            box-shadow: 0 4px 15px rgba(79,195,247,0.2);
+        }
+
+        .spot-item h4 {
+            color: #01579b;
+            font-size: 1rem;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .spot-item .depth {
+            font-size: 0.8rem;
+            color: #0288d1;
+            background: #e1f5fe;
+            padding: 2px 8px;
+            border-radius: 10px;
+            display: inline-block;
+        }
+
+        .spot-item p {
+            color: #546e7a;
+            font-size: 0.85rem;
+            margin-top: 5px;
+        }
+
+        .spot-item .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 8px;
+        }
+
+        .tag {
+            font-size: 0.7rem;
+            padding: 3px 8px;
+            border-radius: 8px;
+            background: #fff3e0;
+            color: #e65100;
+        }
+
+        .tag.beginner { background: #e8f5e9; color: #2e7d32; }
+        .tag.advanced { background: #fce4ec; color: #c2185b; }
+        .tag.boat { background: #ede7f6; color: #512da8; }
+
+        /* Detail modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            backdrop-filter: blur(5px);
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 25px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 85vh;
+            overflow-y: auto;
+            z-index: 2001;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: slideUp 0.4s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -40%);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #4fc3f7 0%, #0288d1 100%);
+            padding: 25px;
+            border-radius: 25px 25px 0 0;
+            position: relative;
+        }
+
+        .modal-header h2 {
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .modal-header .location {
+            color: rgba(255,255,255,0.9);
+            font-size: 0.9rem;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 25px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .info-card {
+            background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .info-card.depth { background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); }
+        .info-card.level { background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); }
+        .info-card.type { background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%); }
+        .info-card.access { background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%); }
+
+        .info-card .icon {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .info-card .label {
+            font-size: 0.75rem;
+            color: #666;
+            margin-bottom: 3px;
+        }
+
+        .info-card .value {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+
+        .section h3 {
+            color: #0288d1;
+            font-size: 1rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding-bottom: 8px;
+            border-bottom: 2px dashed #e0f7fa;
+        }
+
+        .section p {
+            color: #546e7a;
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .photo-placeholder {
+            aspect-ratio: 1;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #e1f5fe 0%, #b3e5fc 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #0288d1;
+            font-size: 0.75rem;
+            text-align: center;
+            padding: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px dashed #4fc3f7;
+        }
+
+        .photo-placeholder:hover {
+            background: linear-gradient(135deg, #b3e5fc 0%, #81d4fa 100%);
+            transform: scale(1.05);
+        }
+
+        .photo-placeholder .icon {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .reviews {
+            background: #fafafa;
+            border-radius: 12px;
+            padding: 15px;
+        }
+
+        .review-item {
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .review-item:last-child {
+            border-bottom: none;
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .reviewer {
+            font-weight: 500;
+            color: #333;
+            font-size: 0.9rem;
+        }
+
+        .review-date {
+            color: #999;
+            font-size: 0.8rem;
+        }
+
+        .review-text {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .stars {
+            color: #ffc107;
+        }
+
+        .instagram-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .instagram-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(131,58,180,0.4);
+        }
+
+        /* Paw marker */
+        .paw-marker {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .paw-marker:hover {
+            transform: scale(1.2);
+        }
+
+        /* Leaflet popup custom */
+        .leaflet-popup-content-wrapper {
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+
+        .leaflet-popup-content {
+            margin: 12px 15px;
+        }
+
+        .popup-content {
+            text-align: center;
+        }
+
+        .popup-content h4 {
+            color: #0288d1;
+            margin-bottom: 5px;
+        }
+
+        .popup-content p {
+            color: #666;
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+        }
+
+        .popup-btn {
+            background: linear-gradient(135deg, #4fc3f7, #29b6f6);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .popup-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 3px 10px rgba(41,182,246,0.4);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #0288d1;
+            font-size: 0.9rem;
+        }
+
+        .footer .paws {
+            font-size: 1.2rem;
+            letter-spacing: 5px;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #e1f5fe;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #4fc3f7, #29b6f6);
+            border-radius: 10px;
+        }
+
+        /* Legend */
+        .legend {
+            background: white;
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .legend h3 {
+            color: #0288d1;
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: #546e7a;
+        }
+
+        .legend-paw {
+            width: 28px;
+            height: 28px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .legend-paw svg {
+            width: 24px;
+            height: 24px;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>Diving Cat's 제주 다이빙 스팟 <img src="free_diving_cat.png" alt="Diving Cat" class="cat-img"></h1>
+        <p>제주도 프리다이빙 & 스노쿨링 명소를 고양이 발자국을 따라 탐험해보세요!</p>
+    </header>
+
+    <div class="container">
+        <div class="map-container">
+            <div id="map"></div>
+        </div>
+
+        <div class="sidebar">
+            <div class="filters">
+                <h3>🎯 카테고리 필터</h3>
+                <div class="filter-btns">
+                    <button class="filter-btn active" data-filter="all">전체</button>
+                    <button class="filter-btn" data-filter="freediving">프리다이빙</button>
+                    <button class="filter-btn" data-filter="snorkeling">스노쿨링</button>
+                    <button class="filter-btn" data-filter="beginner">초보자용</button>
+                    <button class="filter-btn" data-filter="boat">보트 다이빙</button>
+                </div>
+            </div>
+
+            <div class="legend">
+                <h3>🐾 발자국 안내</h3>
+                <div class="legend-item">
+                    <span class="legend-paw freediving">
+                        <svg viewBox="0 0 100 100"><ellipse cx="50" cy="65" rx="22" ry="18" fill="#1565c0"/><ellipse cx="28" cy="38" rx="10" ry="12" fill="#1565c0"/><ellipse cx="50" cy="30" rx="10" ry="12" fill="#1565c0"/><ellipse cx="72" cy="38" rx="10" ry="12" fill="#1565c0"/></svg>
+                    </span>
+                    <span>프리다이빙 전문</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-paw snorkeling">
+                        <svg viewBox="0 0 100 100"><ellipse cx="50" cy="65" rx="22" ry="18" fill="#2e7d32"/><ellipse cx="28" cy="38" rx="10" ry="12" fill="#2e7d32"/><ellipse cx="50" cy="30" rx="10" ry="12" fill="#2e7d32"/><ellipse cx="72" cy="38" rx="10" ry="12" fill="#2e7d32"/></svg>
+                    </span>
+                    <span>스노쿨링 추천</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-paw both">
+                        <svg viewBox="0 0 100 100"><ellipse cx="50" cy="65" rx="22" ry="18" fill="#9c27b0"/><ellipse cx="28" cy="38" rx="10" ry="12" fill="#9c27b0"/><ellipse cx="50" cy="30" rx="10" ry="12" fill="#9c27b0"/><ellipse cx="72" cy="38" rx="10" ry="12" fill="#9c27b0"/></svg>
+                    </span>
+                    <span>둘 다 가능</span>
+                </div>
+            </div>
+
+            <div class="spot-list">
+                <h3>🏊 다이빙 스팟 목록</h3>
+                <div id="spotListContainer"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detail Modal -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal" id="modal">
+            <div class="modal-header">
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+                <h2 id="modalTitle"></h2>
+                <p class="location" id="modalLocation"></p>
+            </div>
+            <div class="modal-body">
+                <div class="info-grid">
+                    <div class="info-card depth">
+                        <div class="icon">🌊</div>
+                        <div class="label">수심</div>
+                        <div class="value" id="modalDepth"></div>
+                    </div>
+                    <div class="info-card level">
+                        <div class="icon">⭐</div>
+                        <div class="label">난이도</div>
+                        <div class="value" id="modalLevel"></div>
+                    </div>
+                    <div class="info-card type">
+                        <div class="icon">🤿</div>
+                        <div class="label">유형</div>
+                        <div class="value" id="modalType"></div>
+                    </div>
+                    <div class="info-card access">
+                        <div class="icon">🚗</div>
+                        <div class="label">접근성</div>
+                        <div class="value" id="modalAccess"></div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>✨ 특이점</h3>
+                    <p id="modalFeatures"></p>
+                </div>
+
+                <div class="section">
+                    <h3>📸 인스타그램 사진</h3>
+                    <div class="photo-grid" id="modalPhotos"></div>
+                    <a href="#" class="instagram-link" id="instagramLink" target="_blank">
+                        📷 인스타그램에서 더 보기
+                    </a>
+                </div>
+
+                <div class="section">
+                    <h3>💬 다이버 후기</h3>
+                    <div class="reviews" id="modalReviews"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p class="paws">🐾 🐾 🐾 🐾 🐾</p>
+        <p>Diving Cat과 함께하는 제주 바다 탐험</p>
+        <p style="font-size: 0.8rem; margin-top: 5px; color: #90a4ae;">안전한 다이빙을 위해 항상 전문 교육을 받고, 장비를 점검하세요!</p>
+    </footer>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Diving spots data
+        const divingSpots = [
+            {
+                id: 1,
+                name: "문섬 (한개창)",
+                location: "서귀포시 서홍동",
+                coords: [33.2251, 126.5646],
+                depth: "5m~25m",
+                level: "중급~상급",
+                type: "프리다이빙",
+                access: "보트 5분",
+                category: ["freediving", "boat"],
+                features: "화산 활동으로 형성된 암반 지형에 단단한 암석에 붙어 자라는 홍조류가 풍부합니다. 형형색색의 연산호 군락이 장관을 이루며, 붉은 홍조류와 푸른 바닷물의 조화가 특히 가을에 아름답습니다. 난파선 포인트도 있어 다양한 볼거리를 제공합니다.",
+                instagramTag: "문섬프리다이빙",
+                photos: ["연산호 군락", "난파선 탐험", "홍조류 숲"],
+                reviews: [
+                    { user: "다이빙캣🐱", date: "2024.11", rating: 5, text: "제주 최고의 프리다이빙 포인트! 연산호가 정말 아름다워요. 보트로 5분이면 도착해서 접근성도 좋습니다." },
+                    { user: "바다사랑", date: "2024.10", rating: 5, text: "가을에 방문했는데 시야가 정말 좋았어요. 물고기 떼도 많이 볼 수 있었습니다." }
+                ]
+            },
+            {
+                id: 2,
+                name: "범섬",
+                location: "서귀포시 법환동",
+                coords: [33.2166, 126.5139],
+                depth: "10m~30m",
+                level: "상급",
+                type: "프리다이빙",
+                access: "보트 10분",
+                category: ["freediving", "boat"],
+                features: "약 80m 높이의 깎아지른 절벽으로 둘러싸인 섬으로, 조면암의 주상절리와 해식동굴이 발달해 있습니다. '콧구멍'이라 불리는 독특한 지형과 기차바위 포인트에서 화려한 연산호를 감상할 수 있습니다. 지형 다이빙의 매력을 느낄 수 있는 곳입니다.",
+                instagramTag: "범섬다이빙",
+                photos: ["주상절리", "해식동굴", "연산호"],
+                reviews: [
+                    { user: "딥다이버", date: "2024.09", rating: 5, text: "콧구멍 포인트가 정말 인상적이었어요. 동굴 지형 탐험이 스릴 있습니다!" },
+                    { user: "제주다이버", date: "2024.08", rating: 4, text: "조류가 있어서 경험자에게 추천합니다. 지형이 정말 독특해요." }
+                ]
+            },
+            {
+                id: 3,
+                name: "섶섬",
+                location: "서귀포시 보목동",
+                coords: [33.2319, 126.5058],
+                depth: "5m~20m",
+                level: "중급",
+                type: "프리다이빙",
+                access: "보트 15분",
+                category: ["freediving", "boat"],
+                features: "서귀포시에서 남서쪽으로 3km 떨어진 무인도입니다. 인공 어초와 말미잘 군락, 산호가 어우러져 아기자기한 볼거리가 많습니다. 비교적 다양한 해양생물을 가까이서 관찰할 수 있어 수중 사진 촬영에 인기있는 포인트입니다.",
+                instagramTag: "섶섬다이빙",
+                photos: ["말미잘 군락", "인공어초", "열대어"],
+                reviews: [
+                    { user: "수중사진가", date: "2024.10", rating: 5, text: "말미잘 군락이 정말 예뻐요. 사진 찍기 좋은 포인트가 많습니다." },
+                    { user: "바다탐험가", date: "2024.07", rating: 4, text: "다양한 물고기를 볼 수 있어서 좋았어요. 수온도 적당했습니다." }
+                ]
+            },
+            {
+                id: 4,
+                name: "협재 해변",
+                location: "제주시 한림읍 협재리",
+                coords: [33.3942, 126.2397],
+                depth: "1m~5m",
+                level: "초급",
+                type: "스노쿨링",
+                access: "해변 진입",
+                category: ["snorkeling", "beginner"],
+                features: "방파제 구조 덕분에 비교적 물살이 약해 초보자도 안전하게 즐길 수 있습니다. 에메랄드빛 투명한 물과 하얀 모래사장이 아름다우며, 비양도를 배경으로 한 풍경이 인상적입니다. 주변 편의시설도 잘 갖춰져 있어 가족 단위 방문객에게 인기입니다.",
+                instagramTag: "협재해변스노쿨링",
+                photos: ["에메랄드 바다", "비양도 뷰", "열대어"],
+                reviews: [
+                    { user: "초보다이버", date: "2024.08", rating: 5, text: "처음 스노쿨링하는데 물이 정말 맑고 잔잔해서 좋았어요!" },
+                    { user: "가족여행", date: "2024.07", rating: 5, text: "아이들과 함께 하기 좋아요. 샤워시설도 잘 되어있습니다." }
+                ]
+            },
+            {
+                id: 5,
+                name: "함덕 해변 (서우봉)",
+                location: "제주시 조천읍 함덕리",
+                coords: [33.5430, 126.6698],
+                depth: "2m~8m",
+                level: "중급",
+                type: "스노쿨링",
+                access: "해변 진입",
+                category: ["snorkeling"],
+                features: "서우봉 바로 아래 자리한 포인트가 스노쿨링 명소입니다. 멸치떼와 다양한 물고기 떼를 만날 수 있으며, 동남아 스노쿨링 포인트처럼 해초와 어우러진 물고기들의 모습을 감상할 수 있습니다. 전신 슈트 등 전문 장비 착용을 권장합니다.",
+                instagramTag: "함덕스노쿨링",
+                photos: ["서우봉 뷰", "멸치떼", "해초 숲"],
+                reviews: [
+                    { user: "물개다이버", date: "2024.09", rating: 4, text: "멸치떼가 지나갈 때 정말 장관이에요! 물때 잘 맞춰서 가세요." },
+                    { user: "바다러버", date: "2024.08", rating: 4, text: "조류가 조금 있어서 주의 필요하지만, 해양생물이 다양해요." }
+                ]
+            },
+            {
+                id: 6,
+                name: "월정리 해변",
+                location: "제주시 구좌읍 월정리",
+                coords: [33.5558, 126.7932],
+                depth: "1m~4m",
+                level: "초급",
+                type: "스노쿨링",
+                access: "해변 진입",
+                category: ["snorkeling", "beginner"],
+                features: "물고기가 많이 서식하여 물때만 잘 맞추면 수족관 같은 풍경을 감상할 수 있습니다. 스노쿨링이 어렵다면 투명카약을 이용해 바다를 즐길 수도 있습니다. 해변가 카페거리가 있어 다이빙 후 휴식하기 좋습니다.",
+                instagramTag: "월정리스노쿨링",
+                photos: ["카페거리 뷰", "투명카약", "물고기 관찰"],
+                reviews: [
+                    { user: "카페러버", date: "2024.08", rating: 4, text: "스노쿨링 후 카페에서 쉬기 좋아요. 물이 정말 맑습니다!" },
+                    { user: "초보다이버", date: "2024.07", rating: 5, text: "얕아서 초보자도 안심! 물고기도 많이 봤어요." }
+                ]
+            },
+            {
+                id: 7,
+                name: "김녕 세기알 해변",
+                location: "제주시 구좌읍 김녕리",
+                coords: [33.5576, 126.7573],
+                depth: "0.5m~3m",
+                level: "초급",
+                type: "스노쿨링",
+                access: "해변 진입",
+                category: ["snorkeling", "beginner"],
+                features: "스노쿨링을 하지 않아도 충분히 아름다운 바다입니다. 여름철이면 스노쿨링을 위해 많은 여행객이 찾습니다. 수심이 매우 얕아 아이들에게 최고의 해변이며, 바다가 워낙 깨끗해서 해변에서만 있어도 충분히 바다를 만끽할 수 있습니다.",
+                instagramTag: "김녕세기알",
+                photos: ["에메랄드 바다", "얕은 수심", "가족 스노쿨링"],
+                reviews: [
+                    { user: "가족여행", date: "2024.08", rating: 5, text: "아이들 물놀이하기 딱 좋아요! 수심이 얕아서 안전합니다." },
+                    { user: "힐링여행", date: "2024.07", rating: 5, text: "물이 정말 깨끗해서 그냥 발 담그고 있어도 힐링됩니다." }
+                ]
+            },
+            {
+                id: 8,
+                name: "황우지 선녀탕",
+                location: "서귀포시 서홍동",
+                coords: [33.2432, 126.5608],
+                depth: "2m~6m",
+                level: "중급",
+                type: "둘 다 가능",
+                access: "계단 85개",
+                category: ["freediving", "snorkeling"],
+                features: "보이는 것보다 수심이 깊어 구명조끼는 필수입니다. 근처 상점에서 장비 대여 가능합니다. 주차장에서 선녀탕까지 85개의 계단을 내려가야 하지만, 그만큼 프라이빗한 분위기를 즐길 수 있습니다. 천연 풀장 같은 독특한 지형이 매력적입니다.",
+                instagramTag: "황우지선녀탕",
+                photos: ["천연 풀장", "절벽 뷰", "다이빙"],
+                reviews: [
+                    { user: "모험가", date: "2024.09", rating: 5, text: "계단 내려가는 게 힘들지만 그만한 가치가 있어요! 비밀스러운 장소 느낌." },
+                    { user: "프리다이버", date: "2024.08", rating: 4, text: "수심이 깊어서 프리다이빙 연습하기 좋습니다." }
+                ]
+            },
+            {
+                id: 9,
+                name: "우도 서빈백사",
+                location: "제주시 우도면",
+                coords: [33.5020, 126.9645],
+                depth: "1m~4m",
+                level: "초급",
+                type: "스노쿨링",
+                access: "배편 필요",
+                category: ["snorkeling", "beginner"],
+                features: "우도 8경 중 하나로, 동양에서 유일하게 백사장이 홍조단괴(산호가 부서진 모래)로 이루어진 해수욕장입니다. 파도가 쳐도 물속이 깨끗하게 잘 보이는 것이 특징입니다. 우도는 2~3시간이면 둘러볼 수 있어 당일치기 스노쿨링도 가능합니다.",
+                instagramTag: "우도서빈백사",
+                photos: ["산호모래 해변", "에메랄드 바다", "우도 풍경"],
+                reviews: [
+                    { user: "우도여행", date: "2024.08", rating: 5, text: "산호 해변이라 물이 정말 맑아요! 우도 방문 필수 코스입니다." },
+                    { user: "스노쿨러", date: "2024.07", rating: 5, text: "파도가 있어도 시야가 좋은 게 신기해요. 아름다운 해변!" }
+                ]
+            },
+            {
+                id: 10,
+                name: "중문 색달 (도리빨)",
+                location: "서귀포시 색달동",
+                coords: [33.2468, 126.4095],
+                depth: "2m~15m",
+                level: "초급~상급",
+                type: "둘 다 가능",
+                access: "해변 진입",
+                category: ["freediving", "snorkeling", "beginner"],
+                features: "초보 스노클러를 위한 얕은 수심부터 프리다이버를 위한 깊은 포인트까지 다양합니다. 이국적인 수중 지형이 특징이며, 야간 프리다이빙 포인트로도 유명합니다. 중문관광단지와 가까워 접근성이 좋고, 주변 편의시설도 풍부합니다.",
+                instagramTag: "중문도리빨",
+                photos: ["수중 지형", "야간 다이빙", "열대어"],
+                reviews: [
+                    { user: "나이트다이버", date: "2024.10", rating: 5, text: "야간 프리다이빙 정말 환상적이에요! 낮과는 다른 매력이 있습니다." },
+                    { user: "초보다이버", date: "2024.09", rating: 4, text: "얕은 곳에서 시작해서 점점 깊은 곳으로 갈 수 있어요." }
+                ]
+            },
+            {
+                id: 11,
+                name: "월령",
+                location: "제주시 한림읍 월령리",
+                coords: [33.4609, 126.1855],
+                depth: "3m~12m",
+                level: "중급",
+                type: "프리다이빙",
+                access: "해변 진입",
+                category: ["freediving"],
+                features: "수영장이 아닌 진짜 인어처럼 푸른 제주 바다를 헤엄칠 수 있는 곳입니다. 바다속을 헤엄치는 물고기떼나 산호 같은 다양한 수중생물들을 눈앞에서 관찰할 수 있습니다. 프리다이빙 교육 센터들이 자주 이용하는 트레이닝 포인트입니다.",
+                instagramTag: "월령프리다이빙",
+                photos: ["프리다이빙", "물고기떼", "산호"],
+                reviews: [
+                    { user: "AIDA다이버", date: "2024.09", rating: 5, text: "교육받기 좋은 환경이에요. 강사님들도 친절하시고 시설도 좋습니다." },
+                    { user: "인어공주", date: "2024.08", rating: 5, text: "진짜 인어가 된 기분! 물고기들이 가까이 와요." }
+                ]
+            },
+            {
+                id: 12,
+                name: "이호테우 해변",
+                location: "제주시 이호동",
+                coords: [33.4986, 126.4553],
+                depth: "1m~5m",
+                level: "초급",
+                type: "스노쿨링",
+                access: "해변 진입",
+                category: ["snorkeling", "beginner"],
+                features: "붉은 조랑말과 흰색 조랑말 등대로 유명한 해변입니다. 이국적인 풍경과 함께 스노쿨링을 즐길 수 있습니다. 전망휴게소, 주차장, 탈의실 등 편의시설이 잘 갖춰져 있어 편리합니다. 제주공항에서 가까워 접근성이 뛰어납니다.",
+                instagramTag: "이호테우해변",
+                photos: ["조랑말 등대", "석양 뷰", "해변 풍경"],
+                reviews: [
+                    { user: "사진작가", date: "2024.08", rating: 4, text: "조랑말 등대 배경으로 사진 찍기 좋아요! 스노쿨링도 가능합니다." },
+                    { user: "공항근처", date: "2024.07", rating: 4, text: "공항 가기 전에 들르기 좋아요. 시설도 깔끔합니다." }
+                ]
+            }
+        ];
+
+        // Initialize map
+        const map = L.map('map').setView([33.38, 126.55], 10);
+
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+            subdomains: 'abcd',
+            maxZoom: 19
+        }).addTo(map);
+
+        // Custom paw icon (SVG cat paw)
+        const createPawIcon = (type) => {
+            let color = '#9c27b0'; // default purple (both)
+            if (type === 'freediving') {
+                color = '#1565c0'; // blue
+            } else if (type === 'snorkeling') {
+                color = '#2e7d32'; // green
+            }
+
+            const pawSvg = `
+                <svg viewBox="0 0 100 100" width="38" height="38" style="filter: drop-shadow(2px 2px 3px rgba(0,0,0,0.3));">
+                    <!-- Main pad -->
+                    <ellipse cx="50" cy="65" rx="22" ry="18" fill="${color}"/>
+                    <!-- Toe pads -->
+                    <ellipse cx="28" cy="38" rx="10" ry="12" fill="${color}"/>
+                    <ellipse cx="50" cy="30" rx="10" ry="12" fill="${color}"/>
+                    <ellipse cx="72" cy="38" rx="10" ry="12" fill="${color}"/>
+                </svg>
+            `;
+
+            return L.divIcon({
+                html: `<div class="paw-marker">${pawSvg}</div>`,
+                className: 'paw-icon',
+                iconSize: [38, 38],
+                iconAnchor: [19, 19]
+            });
+        };
+
+        // Add markers
+        let markers = [];
+        divingSpots.forEach(spot => {
+            const marker = L.marker(spot.coords, {
+                icon: createPawIcon(spot.type === '둘 다 가능' ? 'both' :
+                    spot.type === '프리다이빙' ? 'freediving' : 'snorkeling')
+            }).addTo(map);
+
+            marker.spotData = spot;
+
+            const popupContent = `
+                <div class="popup-content">
+                    <h4>🐾 ${spot.name}</h4>
+                    <p>${spot.location}</p>
+                    <p><strong>수심:</strong> ${spot.depth} | <strong>난이도:</strong> ${spot.level}</p>
+                    <button class="popup-btn" onclick="openModal(${spot.id})">상세보기 🐱</button>
+                </div>
+            `;
+
+            marker.bindPopup(popupContent);
+            markers.push(marker);
+        });
+
+        // Generate spot list
+        function generateSpotList(spots) {
+            const container = document.getElementById('spotListContainer');
+            container.innerHTML = spots.map(spot => `
+                <div class="spot-item" onclick="focusSpot(${spot.id})">
+                    <h4>🐾 ${spot.name}</h4>
+                    <span class="depth">${spot.depth}</span>
+                    <p>${spot.location}</p>
+                    <div class="tags">
+                        ${spot.category.includes('beginner') ? '<span class="tag beginner">초보자 OK</span>' : ''}
+                        ${spot.category.includes('boat') ? '<span class="tag boat">보트 필요</span>' : ''}
+                        ${spot.category.includes('freediving') ? '<span class="tag">프리다이빙</span>' : ''}
+                        ${spot.category.includes('snorkeling') ? '<span class="tag">스노쿨링</span>' : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        generateSpotList(divingSpots);
+
+        // Focus on spot
+        function focusSpot(id) {
+            const spot = divingSpots.find(s => s.id === id);
+            if (spot) {
+                map.setView(spot.coords, 14);
+                const marker = markers.find(m => m.spotData.id === id);
+                if (marker) marker.openPopup();
+            }
+        }
+
+        // Modal functions
+        function openModal(id) {
+            const spot = divingSpots.find(s => s.id === id);
+            if (!spot) return;
+
+            document.getElementById('modalTitle').textContent = spot.name;
+            document.getElementById('modalLocation').textContent = `📍 ${spot.location}`;
+            document.getElementById('modalDepth').textContent = spot.depth;
+            document.getElementById('modalLevel').textContent = spot.level;
+            document.getElementById('modalType').textContent = spot.type;
+            document.getElementById('modalAccess').textContent = spot.access;
+            document.getElementById('modalFeatures').textContent = spot.features;
+
+            // Photos
+            document.getElementById('modalPhotos').innerHTML = spot.photos.map(photo => `
+                <div class="photo-placeholder" onclick="window.open('https://www.instagram.com/explore/tags/${spot.instagramTag}/', '_blank')">
+                    <span class="icon">📷</span>
+                    <span>${photo}</span>
+                </div>
+            `).join('');
+
+            // Instagram link
+            document.getElementById('instagramLink').href = `https://www.instagram.com/explore/tags/${spot.instagramTag}/`;
+
+            // Reviews
+            document.getElementById('modalReviews').innerHTML = spot.reviews.map(review => `
+                <div class="review-item">
+                    <div class="review-header">
+                        <span class="reviewer">${review.user}</span>
+                        <span class="review-date">${review.date}</span>
+                    </div>
+                    <div class="stars">${'⭐'.repeat(review.rating)}</div>
+                    <p class="review-text">${review.text}</p>
+                </div>
+            `).join('');
+
+            document.getElementById('modalOverlay').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('modalOverlay').style.display = 'none';
+        }
+
+        // Close modal on overlay click
+        document.getElementById('modalOverlay').addEventListener('click', (e) => {
+            if (e.target.id === 'modalOverlay') closeModal();
+        });
+
+        // Filter buttons
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const filter = btn.dataset.filter;
+
+                // Filter markers
+                markers.forEach(marker => {
+                    const spot = marker.spotData;
+                    let show = filter === 'all' || spot.category.includes(filter);
+
+                    if (show) {
+                        marker.addTo(map);
+                    } else {
+                        map.removeLayer(marker);
+                    }
+                });
+
+                // Filter list
+                const filteredSpots = filter === 'all'
+                    ? divingSpots
+                    : divingSpots.filter(s => s.category.includes(filter));
+                generateSpotList(filteredSpots);
+            });
+        });
+
+        // Make functions globally accessible
+        window.openModal = openModal;
+        window.closeModal = closeModal;
+        window.focusSpot = focusSpot;
+    </script>
+</body>
+</html>
